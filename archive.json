@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-10-27T00:37:43.702496+00:00",
+  "timestamp": "2026-11-01T00:29:54.384640+00:00",
   "repo": "oauth-wg/oauth-delegate-sd-jwt",
   "labels": [
     {
@@ -166,6 +166,70 @@
       "body": "From call for adoption: Cliff Singletary: \"Section 8.2 lets an Issuer or Holder put constraints in \u201cvisible claims,\u201d but nothing in Section 6 requires the verifier to check that each Delegate Payload stays within the constraints of the link that issued it. Narrowing-only across the chain should be a verifier requirement rather than a policy option, or the chain carries attribution but not bounded authority.\"",
       "createdAt": "2026-10-13T11:43:56Z",
       "updatedAt": "2026-10-13T11:43:56Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 10,
+      "id": "I_kwDORer75M8AAAABbMcaAA",
+      "title": "Specify exact meaning of claims in the delegation context",
+      "url": "https://github.com/oauth-wg/oauth-delegate-sd-jwt/issues/10",
+      "state": "OPEN",
+      "author": "c2bo",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "Some claims like `aud` have clear meaning in a \"normal\" SD-JWT use-case and are currently somewhat undefined for degelate SD-JWT.\n\nWe should do a full pass on the claims and clearly define semantics",
+      "createdAt": "2026-10-30T13:27:52Z",
+      "updatedAt": "2026-10-30T13:27:52Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 11,
+      "id": "I_kwDORer75M8AAAABbMga1A",
+      "title": "Should the delegation process/protocol be described?",
+      "url": "https://github.com/oauth-wg/oauth-delegate-sd-jwt/issues/11",
+      "state": "OPEN",
+      "author": "c2bo",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "Imho, we should discuss the scope of this document a bit for that topic - I believe we should provide clear expectations towards a delegation process, but leave specifics up to the respective protcols.\n\nWe should imho describe the general modes for delegation we see:\n\n - Delegation as a peer to peer flow \n - Delegation via an intermediary service (Issuer, wallet backend, etc.)\n\nand describe assumptions for those mechanisms.",
+      "createdAt": "2026-10-30T13:32:09Z",
+      "updatedAt": "2026-10-30T13:32:09Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 12,
+      "id": "I_kwDORer75M8AAAABbMiN0A",
+      "title": "Have explicit SD-JWT VC Mapping",
+      "url": "https://github.com/oauth-wg/oauth-delegate-sd-jwt/issues/12",
+      "state": "OPEN",
+      "author": "GarethCOliver",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Currently, how to use delegate SD-JWT with SD-JWT VC spec is implicit. This issue is tracking having an explicit section specifying the relationship (i.e. it living in delegate_payload, which claims are in delegate_payload vs base kb-sd-jwt. \n\nThis includes how to interpret a delegate SD-JWT with multiple vct types in the chain, and for how a Delegate Holder and Verifier should semantically handle a delegate_payload structure with multiple entries. ",
+      "createdAt": "2026-10-30T13:33:55Z",
+      "updatedAt": "2026-10-30T13:33:55Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 13,
+      "id": "I_kwDORer75M8AAAABbMmGtw",
+      "title": "Policies: scope & structure",
+      "url": "https://github.com/oauth-wg/oauth-delegate-sd-jwt/issues/13",
+      "state": "OPEN",
+      "author": "c2bo",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "We should define the general way we want to deal with policies in this document. We need to decide how far we want to define policies and their extension point / structure in this document.\n\nInitial gut feeling would be to clearly define the security-critical policies (scoped to SD-JWT itself and the delegation process) and leave any domain-specific policies to an extension point and external work.",
+      "createdAt": "2026-10-30T13:37:53Z",
+      "updatedAt": "2026-10-30T13:37:53Z",
       "closedAt": null,
       "comments": []
     }
