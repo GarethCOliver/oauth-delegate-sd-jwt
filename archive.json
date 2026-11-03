@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-11-01T00:29:54.384640+00:00",
+  "timestamp": "2026-11-03T00:23:36.755579+00:00",
   "repo": "oauth-wg/oauth-delegate-sd-jwt",
   "labels": [
     {
@@ -94,9 +94,17 @@
       "labels": [],
       "body": "Add some illustrative examples",
       "createdAt": "2026-09-24T22:52:01Z",
-      "updatedAt": "2026-09-24T22:52:01Z",
+      "updatedAt": "2026-11-02T06:49:50Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "atakedemo",
+          "authorAssociation": "NONE",
+          "body": "@GarethCOliver \nI created [PR#14](https://github.com/oauth-wg/oauth-delegate-sd-jwt/pull/14).\nPlease review it !",
+          "createdAt": "2026-11-02T06:49:50Z",
+          "updatedAt": "2026-11-02T06:49:50Z"
+        }
+      ]
     },
     {
       "number": 6,
@@ -351,6 +359,32 @@
           "updatedAt": "2026-10-22T04:36:23Z"
         }
       ],
+      "reviews": []
+    },
+    {
+      "number": 14,
+      "id": "PR_kwDORer75M8AAAABMPNW0g",
+      "title": "doc(examples)-Add worked dSD-JWT example with generator",
+      "url": "https://github.com/oauth-wg/oauth-delegate-sd-jwt/pull/14",
+      "state": "OPEN",
+      "author": "atakedemo",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "Create for issue#5(https://github.com/oauth-wg/oauth-delegate-sd-jwt/issues/5)\n\n## What this adds\n\nThe draft specifies the dSD-JWT format in prose and skeleton form, but has no concrete instance. Everything a reader needs in order to check their implementation \u2014 what a real chain looks like on the wire, which `typ` appears at which position, what `sd_hash` is actually computed over, where `_sd_alg` lives relative to the Delegate Payload \u2014 currently has to be reconstructed from the rules.\n\nThis adds `## Examples` as the final subsection of `# Formats`, so the bytes sit immediately after the rules that produce them and before `# Verification`, which the reader can then follow against a real artifact.\n\nThe example carries a single delegation, `SD-JWT ~~ KB-SD-JWT+KB ~~ KB-SD-JWT`, and runs it through three stages:\n\n1. **Issuance** \u2014 an ordinary SD-JWT, with `cnf` naming the Holder key that signs the next layer.\n2. **Delegation** \u2014 the Holder signs a KB-SD-JWT+KB. This is where the format's distinctive points become visible: `typ` is `kb-sd-jwt+kb`, `sd_hash` covers the SD-JWT *including* its disclosure, `_sd_alg` stays in the KB-SD-JWT payload while every other claim moves into the Delegate Payload, and `cnf` sits in the Delegate Payload as Section 5.4 requires.\n3. **Presentation** \u2014 the same delegation presented to two different Verifiers, each receiving a different Delegate Payload disclosure.\n\nThe third stage is the part that is hardest to infer from the current text. Each terminal KB-SD-JWT's `sd_hash` covers the preceding KB-SD-JWT+KB *as serialized for that Verifier*, so a chain assembled for one Verifier does not verify at another, and neither Verifier learns more about the claim withheld from it than that a second digest exists. Both presentations are dSD-JWTs rather than dSD-JWT+KBs, which also exercises the trailing-tilde distinction.\n\n## Reproducibility\n\n`examples/generate.py` produces every committed artifact and self-verifies before writing. It checks ES256 signatures at each layer, disclosure digests, chained `sd_hash` values, `typ` values at each chain position, chain boundaries, the transaction binding, and that each Verifier-specific presentation omits the other's disclosure. It exits non-zero on any failure.\n\nIt signs with RFC 6979 deterministic ECDSA and anchors its keys and timestamps to fixed values, so re-running reproduces the committed files byte for byte \u2014 a non-empty `git diff` after running it means an input changed. This matters for an example whose whole point is a chain of hashes: without determinism, every regeneration rewrites every `sd_hash` and the files cannot be reviewed as a diff.\n\nI did not wire it into the `Makefile`, since this repository's `Makefile` is the unmodified `i-d-template` one. Happy to add a target if you'd prefer the build to regenerate and diff.\n\n## One substantive thing the example turned up\n\nThe example was first built against `typ` values of `kb+sd-jwt+kb` for the intermediate layer. Section 5.4 requires `kb-sd-jwt+kb`, and Verification step 3.5 checks for it, so those artifacts would have contradicted the draft. The committed example uses `kb-sd-jwt+kb`, and `generate.py` asserts the value at each position rather than only signing it, so the example cannot silently drift from the rule again.\n\nThis is worth flagging because the earlier spelling is the one in the `-00` draft and is still what most existing material shows. An example that pins the current value is probably the cheapest way to stop it propagating.\n\n## Notes and open questions\n\n- **Application claims.** Below the Delegate Payload level the example uses claim names from one application. The text says explicitly that these are illustrative and not defined by this specification. If you'd rather the example be application-neutral, I can replace them with generic names \u2014 it would cost some of the motivation for why two separately disclosable claims exist, so I left them in.\n- **Verification section.** The example is placed under `# Formats`. It could equally be referenced from `# Verification`, which currently describes the procedure with nothing to run it against. Happy to add cross-references from the verification steps to the relevant figures if that is useful.\n- **Multiple delegations.** The chain has one delegation. A two-delegation example would exercise `~~` repetition and the \"except the final one\" branch of Verification step 3, but roughly doubles the artifact size. Left out unless wanted.\n- **`issuer_jwt_hash`.** The example uses `sd_hash` throughout. The `issuer_jwt_hash` alternative in Section 5.4 \u2014 the one that lets a Delegate Holder drop preceding disclosures \u2014 has no instance here. That may be the more valuable second example, since it is the harder of the two to get right.\n\n## Build\n\n`mmark` builds the draft cleanly with the new includes; all figure anchors resolve and all referenced example paths exist.\n",
+      "createdAt": "2026-11-02T06:48:14Z",
+      "updatedAt": "2026-11-02T06:50:30Z",
+      "baseRepository": "oauth-wg/oauth-delegate-sd-jwt",
+      "baseRefName": "main",
+      "baseRefOid": "0c1d6863e4c3fc2baffc9cd8246eca902b49d9e1",
+      "headRepository": "atakedemo/oauth-delegate-sd-jwt",
+      "headRefName": "doc-add-examples",
+      "headRefOid": "88680f18f58c445553848ca63e04ce9bbbec0b2f",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
       "reviews": []
     }
   ]
